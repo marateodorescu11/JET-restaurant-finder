@@ -24,6 +24,7 @@ function handleSubmit() {
 
 <template>
   <form @submit.prevent="handleSubmit">
+    <!-- Reset error on every keystroke so it doesn't linger after the user corrects the postcode -->
     <input
       v-model="postcode"
       type="text"
