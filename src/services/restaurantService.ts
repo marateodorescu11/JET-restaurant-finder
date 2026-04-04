@@ -4,17 +4,18 @@ const BASE_URL =
   'https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode'
 
 export async function getRestaurantsByPostcode(postcode: string): Promise<Restaurant[]> {
-  const sanitised = postcode.trim().replace(/\s+/g, '') //sanitise postcode before building request URL
+  // Assumption 1: the API accepts postcodes without spaces 
+  const sanitised = postcode.trim().replace(/\s+/g, '')
 
   let response: Response
   try {
     response = await fetch(`${BASE_URL}/${sanitised}`)
-  } catch {// error handling for network issues
+  } catch {
     throw new Error('Network error: unable to reach the Just Eat API.')
   }
 
   if (!response.ok) {
-    throw new Error(//check body missing response
+    throw new Error(
       `API error: ${response.status} ${response.statusText}. Check the postcode and try again.`,
     )
   }
