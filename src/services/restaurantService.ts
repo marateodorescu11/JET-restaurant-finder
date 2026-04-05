@@ -1,7 +1,8 @@
 import type { ApiResponse, Restaurant } from '../types/restaurant'
 
-const BASE_URL =
-  'https://uk.api.just-eat.io/discovery/uk/restaurants/enriched/bypostcode'
+// In development, requests go through the Vite proxy (/api) to avoid CORS.
+// The proxy forwards /api/* to https://uk.api.just-eat.io/*
+const BASE_URL = '/api/discovery/uk/restaurants/enriched/bypostcode'
 
 export async function getRestaurantsByPostcode(postcode: string): Promise<Restaurant[]> {
   // Assumption 1: the API accepts postcodes without spaces 

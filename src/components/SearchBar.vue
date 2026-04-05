@@ -23,16 +23,25 @@ function handleSubmit() {
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
-    <!-- Reset error on every keystroke so it doesn't linger after the user corrects the postcode -->
-    <input
-      v-model="postcode"
-      type="text"
-      placeholder="Enter a UK postcode"
-      @input="errorMessage = ''"
-    />
-    <button type="submit">Search</button>
+  <div class="flex flex-col items-center gap-2">
+    <form @submit.prevent="handleSubmit" class="flex w-full max-w-2xl">
+      <!-- Reset error on every keystroke so it doesn't linger after the user corrects the postcode -->
+      <input
+        v-model="postcode"
+        type="text"
+        placeholder="e.g. EC4M 7RF"
+        @input="errorMessage = ''"
+        class="flex-1 px-6 py-3 rounded-l-full bg-white text-[#1A1A18] placeholder-gray-400 outline-none text-sm"
+      />
+      <button
+        type="submit"
+        class="px-7 py-3 rounded-r-full bg-white text-[#FF6900] font-semibold text-sm hover:bg-orange-50 transition-colors"
+      >
+        Search
+      </button>
+    </form>
+
     <!-- Only rendered when there is a validation error -->
-    <p v-if="errorMessage">{{ errorMessage }}</p>
-  </form>
+    <p v-if="errorMessage" class="text-red-200 text-xs mt-1">{{ errorMessage }}</p>
+  </div>
 </template>
