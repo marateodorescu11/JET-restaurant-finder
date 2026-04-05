@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { Restaurant } from './types/restaurant'
+import { getRestaurantsByPostcode } from './services/restaurantService'
 import SearchBar from './components/SearchBar.vue'
 import RestaurantList from './components/RestaurantList.vue'
 
@@ -8,12 +9,29 @@ import RestaurantList from './components/RestaurantList.vue'
 const restaurants = ref<Restaurant[]>([])
 const isLoading = ref(false)
 const errorMessage = ref<string | null>(null)
+
+// Called when SearchBar emits a 'search' event with a validated postcode
+async function handleSearch(postcode: string) {
+  restaurants.value = []
+  errorMessage.value = null
+  isLoading.value = true
+
+  try {
+    restaurants.value = await getRestaurantsByPostcode(postcode)
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Something went wrong.'
+  } finally {
+    // Always stop loading whether the request succeeded or failed
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
   <div class="min-h-screen bg-gray-50">
     <h1 class="text-2xl font-bold text-center py-8">JET Restaurant Finder</h1>
-    <SearchBar />
+    <!-- Listen for the 'search' event emitted by SearchBar -->
+    <SearchBar @search="handleSearch" />
     <RestaurantList :restaurants="restaurants" />
   </div>
 </template>
