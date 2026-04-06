@@ -66,4 +66,36 @@ describe('getRestaurantsByPostcode', () => {
     expect(calledUrl).not.toContain(' ')
     expect(calledUrl).toContain('EC4M7RF')
   })
+
+  it('throws a network error when fetch rejects', async () => {
+    // Simulate no internet / DNS failure
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Failed to fetch')))
+
+    await expect(getRestaurantsByPostcode('EC4M7RF')).rejects.toThrow(
+      'Network error: unable to reach the Just Eat API.',
+    )
+  })
+
+  it('throws when the API returns a non-2xx response', async () => {
+    // Simulate a 404 from the API
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 404,
+      statusText: 'Not Found',
+    }))
+
+    await expect(getRestaurantsByPostcode('EC4M7RF')).rejects.toThrow('API error: 404')
+  })
+
+  it('throws when the response is missing the restaurants array', async () => {
+    // Simulate a malformed response body
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ metaData: {} }),
+    }))
+
+    await expect(getRestaurantsByPostcode('EC4M7RF')).rejects.toThrow(
+      'Unexpected API response: missing restaurants data.',
+    )
+  })
 })
