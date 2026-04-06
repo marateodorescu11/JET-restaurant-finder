@@ -11,7 +11,7 @@ export interface Address {
 
 export interface Rating {
   count: number
-  starRating: number
+  starRating: number | null
   userRating: number | null
 }
 
