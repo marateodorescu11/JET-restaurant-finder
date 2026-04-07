@@ -34,6 +34,11 @@ tests/
 
 **Prerequisites:** Node.js 18+
 
+**Clone and navigate into the project:**
+```bash
+cd JET-restaurant-finder
+```
+
 **Install dependencies:**
 ```bash
 npm install
@@ -98,7 +103,7 @@ The assignment does not mention input validation. I added UK postcode format val
 
 ---
 
-## Improvements I Would Make With More Time
+## Improvements I Would Make
 
 - **Filtering and sorting** — let the user filter by cuisine type or sort by rating or name
 - **Accessibility** — run a Lighthouse accessibility audit directly in Chrome DevTools and address any flagged issues (such as ARIA labels on interactive elements, colour contrast ratios)
